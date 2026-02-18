@@ -1,0 +1,8 @@
+# 忽略所有容器持久化产生的数据目录
+mysql-data/
+zabbix-server/
+zabbix-web/
+
+# 忽略系统可能产生的临时文件
+.DS_Store
+*.log
