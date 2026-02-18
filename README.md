@@ -100,9 +100,6 @@ cd /home/caleb/zabbix-docker
 vim docker-compose.yml
 ```
 
-
-**先把下面这段【基础设施与数据库层】的代码复制进去：**
-
 ```yaml
 version: '3.8'
 
