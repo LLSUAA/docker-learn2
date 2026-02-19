@@ -79,6 +79,15 @@ sudo tee /etc/docker/daemon.json <<-'EOF'
 }
 EOF
 ```
+
+**4.内核与 Docker 读取新配置的命令**
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
+
+
 ## 第三步：docker 部署
 
 既然环境现在是最新、最标准的了，我们把刚才没建完的数据基建目录一口气建好：
