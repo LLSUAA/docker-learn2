@@ -23,3 +23,23 @@ if [ ! -d "$BACKUP_DIR" ]; then
 fi
 
 echo "⏳ 开始执行 Zabbix 数据库备份..."
+# 3. 执行：通过 docker exec 驱动容器内的 mysqldump 工具导出数据
+# 注意：> 符号将容器内部的标准输出重定向到宿主机的物理文件中
+docker exec zabbix-mysql mysqldump -uroot -proot123 zabbix > "$BACKUP_FILE"
+
+# 4. 校验：捕获并判断上一条命令的退出状态码 ($?)
+if [ $? -eq 0 ]; then
+  echo "✅ 备份成功: $BACKUP_FILE"
+  
+  # 5. 收尾：仅在当前备份成功的前提下，执行过期数据清理，防止数据断档
+  echo "🗑️ 开始清理 7 天前的旧备份..."
+  # 语法解析: 查找备份目录下，名字匹配，且修改时间大于 7 天的文件，直接删除
+  find "$BACKUP_DIR" -type f -name "zabbix_db_*.sql" -mtime +7 -delete
+  
+  echo "🏁 备份与清理流程执行完毕。"
+else
+  echo "❌ 致命错误: 数据库备份失败！"
+  # 发生错误时，将刚才生成的 0 字节废文件删除，防止占用空间并干扰排错
+  rm -f "$BACKUP_FILE"
+  exit 1
+fi
