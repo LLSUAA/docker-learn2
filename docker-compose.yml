@@ -8,6 +8,7 @@ services:
   mysql-server:
     image: mysql:8.0
     container_name: zabbix-mysql
+    restart: always    
     networks:
       - zabbix-net
     ports:
@@ -29,6 +30,7 @@ services:
   zabbix-server:
     image: zabbix/zabbix-server-mysql:ubuntu-6.0-latest
     container_name: zabbix-server
+    restart: always    
     networks:
       - zabbix-net
     ports:
@@ -46,6 +48,7 @@ services:
   zabbix-web:
     image: zabbix/zabbix-web-nginx-mysql:ubuntu-6.0-latest
     container_name: zabbix-web
+    restart: always    
     networks:
       - zabbix-net
     ports:
